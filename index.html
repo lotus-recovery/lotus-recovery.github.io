@@ -5,237 +5,303 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lotus — the recovery app for people who'll never call a helpline</title>
 <meta name="description" content="Lotus turns the money you don't gamble into visible growth — a living lotus and real goals. It never connects to your bank, and safety features are free, forever.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,550;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+  /* Tokens are the app's own (theme.ts LIGHT/DARK + BRAND) — the site wears the app's skin. */
   :root{
-    --pond0:#0A1412; --pond1:#0E1D19; --pond2:#0D2A22;
-    --ink:#ECF1EE; --soft:#A9B6B0; --muted:#6F7D77;
-    --teal:#2EB78C; --teal-hi:#7FD9BA; --teal-dim:#17624B;
-    --hair:rgba(236,241,238,.09); --hair-strong:rgba(236,241,238,.16);
-    --glass:rgba(236,241,238,.035);
-    --amber:#F2D9A6; --amber-hi:#F7E7C3; --amber-line:rgba(242,200,121,.22); --amber-bg:rgba(242,200,121,.06);
-    --serif:"Fraunces",Georgia,serif; --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --bg:#F1F7F4; --card:#FFFFFF; --ink:#21302B; --soft:#516056; --muted:#8A938D; --line:#E2EAE5;
+    --teal:#1D9E75; --teal-deep:#0F6E56; --teal-pale:#E1F5EE;
+    --warn-bg:#FBF1E2; --warn-line:#F0D9B8; --warn-ink:#8A5A14;
+    --pond:#E1F5EE; --page:#EAF2EE; --bezel:#1C2420; --btn-ink:#FFFFFF;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0E1513; --card:#17201D; --ink:#ECF1EE; --soft:#A6B2AC; --muted:#73807A; --line:#283330;
+      --teal:#2EB78C; --teal-deep:#7FD9BA; --teal-pale:#13302A;
+      --warn-bg:#2A2216; --warn-line:#4A3D22; --warn-ink:#E6C277;
+      --pond:#13302A; --page:#0A100E; --bezel:#000; --btn-ink:#06231C;
+    }
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{
-    font-family:var(--sans); color:var(--ink); line-height:1.65; font-size:16px;
-    background:var(--pond0);
-    background-image:
-      radial-gradient(1100px 600px at 50% -8%, rgba(46,183,140,.13), transparent 65%),
-      radial-gradient(900px 500px at 85% 40%, rgba(46,183,140,.05), transparent 60%),
-      radial-gradient(1000px 700px at 12% 78%, rgba(46,183,140,.06), transparent 65%),
-      linear-gradient(180deg, var(--pond1) 0%, var(--pond0) 45%, var(--pond2) 100%);
-    background-attachment:fixed;
+    font-family:var(--sans); color:var(--ink); background:var(--page);
+    font-size:16px; line-height:1.6;
+    background-image:radial-gradient(700px 460px at 50% 300px, var(--teal-pale), transparent 70%);
   }
-  .wrap{max-width:660px;margin:0 auto;padding:0 24px}
+  .wrap{max-width:640px;margin:0 auto;padding:0 20px}
+
+  .fade{animation:fadeUp .8s ease both}
+  .d1{animation-delay:.07s}.d2{animation-delay:.14s}.d3{animation-delay:.21s}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important}}
 
   /* ---------- hero ---------- */
-  .hero{text-align:center;padding:72px 0 40px}
-  .pond{position:relative;width:230px;height:222px;margin:0 auto}
-  .ripple{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);border:1.4px solid rgba(93,202,165,.32);border-radius:50%;pointer-events:none}
-  .r1{width:120px;height:34px;animation:ripple 7s ease-out infinite}
-  .r2{width:120px;height:34px;animation:ripple 7s ease-out 2.3s infinite}
-  .r3{width:120px;height:34px;animation:ripple 7s ease-out 4.6s infinite}
-  @keyframes ripple{0%{transform:translateX(-50%) scale(.55);opacity:0}12%{opacity:.55}100%{transform:translateX(-50%) scale(2.1);opacity:0}}
-  .flower{position:relative;animation:bob 8s ease-in-out infinite;transform-origin:50% 85%}
-  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  .hero{text-align:center;padding:58px 0 34px}
+  .brand{font-size:18px;font-weight:600;letter-spacing:.5px}
+  .tag{font-size:14px;color:var(--teal-deep);margin-top:3px}
+  h1{font-size:clamp(30px,5.6vw,42px);line-height:1.16;font-weight:700;letter-spacing:-.015em;margin:26px auto 14px;max-width:16ch;text-wrap:balance}
+  .sub{font-size:16.5px;color:var(--soft);max-width:42ch;margin:0 auto;text-wrap:pretty}
+
+  /* ---------- phone (the teaser — a faithful Today screen) ---------- */
+  .phone-stage{display:flex;justify-content:center;padding:34px 0 8px}
+  .phone{
+    width:302px;border-radius:46px;background:var(--bezel);padding:9px;
+    box-shadow:0 24px 60px -18px rgba(20,40,33,.35), 0 4px 16px rgba(20,40,33,.12)
+  }
+  .screen{background:var(--bg);border-radius:38px;overflow:hidden;padding:10px 12px 0;position:relative}
+  .island{width:84px;height:22px;background:var(--bezel);border-radius:12px;margin:2px auto 6px}
+  .statusbar{position:absolute;top:13px;left:26px;font-size:11.5px;font-weight:600}
+
+  .apphead{display:flex;align-items:center;justify-content:space-between;margin:4px 2px 8px}
+  .apphead .name{font-size:14.5px;font-weight:600;letter-spacing:.4px}
+  .pill{display:inline-flex;align-items:center;gap:4px;background:var(--teal);color:var(--btn-ink);font-size:9.5px;font-weight:600;padding:4px 9px;border-radius:11px}
+  .pill svg{width:9px;height:9px}
+
+  .chip{display:inline-block;font-size:9.5px;color:var(--soft);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:5px 9px;margin:0 2px 8px}
+
+  .pondcard{background:var(--pond);border-radius:13px;padding:10px 8px 12px;text-align:center;margin-bottom:9px;position:relative;overflow:hidden}
+  .ripple{position:absolute;left:50%;bottom:44px;transform:translateX(-50%);border:1px solid rgba(93,202,165,.4);border-radius:50%;pointer-events:none}
+  .r1{width:84px;height:24px;animation:ripple 7s ease-out infinite}
+  .r2{width:84px;height:24px;animation:ripple 7s ease-out 2.3s infinite}
+  .r3{width:84px;height:24px;animation:ripple 7s ease-out 4.6s infinite}
+  @keyframes ripple{0%{transform:translateX(-50%) scale(.5);opacity:0}12%{opacity:.5}100%{transform:translateX(-50%) scale(2)  ;opacity:0}}
+  .flower{animation:bob 8s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
   .spk{animation:twinkle 2.4s ease-in-out infinite}
   .spk2{animation-delay:1.2s}.spk3{animation-delay:.7s}
   @keyframes twinkle{0%,100%{opacity:0}50%{opacity:.9}}
-  @media (prefers-reduced-motion: reduce){.ripple,.flower,.fade,.spk{animation:none !important}}
+  .plantname{font-size:11.5px;font-weight:500;margin-top:2px}
+  .plantstat{font-size:9.5px;color:var(--teal-deep);margin-top:1px}
 
-  .brand{font-family:var(--serif);font-size:30px;font-weight:550;letter-spacing:.06em;margin-top:2px}
-  .tag{font-family:var(--serif);font-style:italic;font-size:16.5px;color:var(--teal-hi);margin-top:7px;opacity:.9}
+  .acard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px;margin-bottom:8px;text-align:left}
+  .alabel{font-size:9.5px;color:var(--muted)}
+  .bignum{font-size:21px;font-weight:600;color:var(--teal-deep);margin-top:2px}
+  .ahint{font-size:8.5px;color:var(--muted);margin-top:2px}
+  .goalamt{font-size:11px;font-weight:600;margin-top:1px}
+  .track{height:6px;background:var(--teal-pale);border-radius:12px;overflow:hidden;margin-top:6px}
+  .fill{height:100%;width:17.5%;background:var(--teal);border-radius:12px}
+  .abtn{display:flex;align-items:center;justify-content:center;gap:5px;background:var(--teal);color:var(--btn-ink);font-size:10px;font-weight:600;border-radius:8px;padding:8px;margin-top:8px}
+  .abtn svg{width:10px;height:10px}
 
-  h1{font-family:var(--serif);font-size:clamp(34px,6.4vw,52px);line-height:1.14;font-weight:550;letter-spacing:-.01em;margin:52px auto 20px;max-width:15ch;text-wrap:balance}
-  .sub{font-size:17.5px;color:var(--soft);max-width:44ch;margin:0 auto;text-wrap:pretty}
+  .arow{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px;margin-bottom:7px;font-size:10.5px;font-weight:500;text-align:left}
+  .arow svg{width:13px;height:13px;color:var(--teal);flex:none}
+  .arow.warm{background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-ink)}
+  .arow.warm svg{color:var(--warn-ink)}
 
-  .fade{animation:fadeUp .9s ease both}
-  .d1{animation-delay:.08s}.d2{animation-delay:.16s}.d3{animation-delay:.24s}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .tabbar{display:flex;border-top:1px solid var(--line);margin:2px -12px 0;padding:7px 6px 12px;background:var(--card)}
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:8px;color:var(--muted)}
+  .tab svg{width:15px;height:15px}
+  .tab.on{color:var(--teal)}
 
-  form{display:flex;gap:10px;max-width:440px;margin:34px auto 12px;flex-wrap:wrap;justify-content:center}
+  /* ---------- sections ---------- */
+  section{padding:30px 0}
+  .eyebrow{font-size:12.5px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+
+  .row{display:flex;gap:13px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 16px;margin-bottom:9px}
+  .row svg{width:19px;height:19px;color:var(--teal);flex:none;margin-top:2px}
+  .row strong{display:block;font-size:15.5px;font-weight:600;margin-bottom:2px}
+  .row p{font-size:13.5px;color:var(--soft)}
+  .row.warm{background:var(--warn-bg);border-color:var(--warn-line)}
+  .row.warm svg{color:var(--warn-ink)}
+  .row.warm strong{color:var(--warn-ink)}
+
+  /* ---------- email ---------- */
+  .signup{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 22px;text-align:center}
+  .signup h2{font-size:19px;font-weight:650;margin-bottom:6px}
+  .signup .lead{font-size:14px;color:var(--soft);margin-bottom:16px}
+  form{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
   input[type=email]{
-    flex:1;min-width:220px;padding:14px 16px;font-size:16px;font-family:var(--sans);
-    border:1px solid var(--hair-strong);border-radius:14px;background:rgba(10,20,18,.55);color:var(--ink);
+    flex:1;min-width:200px;padding:13px 15px;font-size:16px;font-family:var(--sans);
+    border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);
     outline:none;transition:border-color .2s
   }
   input[type=email]::placeholder{color:var(--muted)}
   input[type=email]:focus{border-color:var(--teal)}
   button{
-    padding:14px 22px;font-size:15px;font-weight:600;font-family:var(--sans);color:#06231C;
-    background:var(--teal);border:none;border-radius:14px;cursor:pointer;transition:background .2s,transform .15s
+    padding:13px 20px;font-size:15px;font-weight:600;font-family:var(--sans);color:var(--btn-ink);
+    background:var(--teal);border:none;border-radius:12px;cursor:pointer;transition:filter .2s,transform .15s
   }
-  button:hover{background:var(--teal-hi)}
+  button:hover{filter:brightness(1.08)}
   button:active{transform:scale(.98)}
-  .fine{font-size:12.5px;color:var(--muted);max-width:400px;margin:0 auto}
+  button:focus-visible,input:focus-visible{outline:2px solid var(--teal-deep);outline-offset:2px}
+  .fine{font-size:12.5px;color:var(--muted);max-width:380px;margin:12px auto 0}
 
-  /* ---------- sections ---------- */
-  section{padding:40px 0}
-  .rule{width:44px;height:1px;background:var(--hair-strong);margin:6px auto 0}
+  /* ---------- crisis ---------- */
+  .crisis{background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:14px;padding:22px 22px 18px}
+  .crisis h2{font-size:16.5px;font-weight:650;color:var(--warn-ink);margin-bottom:12px;line-height:1.45}
+  .crisis ul{list-style:none;display:grid;gap:7px}
+  .crisis li{font-size:13.5px;color:var(--warn-ink)}
+  .crisis strong{font-weight:650}
 
-  .promises{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));margin-top:10px}
-  .promise{
-    background:var(--glass);border:1px solid var(--hair);border-radius:18px;padding:24px 22px;
-    backdrop-filter:blur(2px)
-  }
-  .promise h3{font-family:var(--serif);font-size:19px;font-weight:550;color:var(--teal-hi);margin-bottom:9px;line-height:1.3}
-  .promise p{font-size:14px;color:var(--soft)}
-
-  h2{font-family:var(--serif);font-size:26px;font-weight:550;margin-bottom:26px;text-align:center}
-  .steps{display:grid;gap:0}
-  .step{display:flex;gap:20px;padding:22px 4px;border-top:1px solid var(--hair);align-items:flex-start}
-  .step:last-child{border-bottom:1px solid var(--hair)}
-  .num{font-family:var(--serif);font-size:26px;font-weight:400;color:var(--teal);line-height:1.15;min-width:30px}
-  .step p{font-size:15px;color:var(--soft)}
-  .step strong{color:var(--ink);font-weight:600;display:block;margin-bottom:2px;font-size:15.5px}
-
-  .quiet{
-    font-family:var(--serif);font-style:italic;font-size:18px;line-height:1.7;color:var(--soft);
-    text-align:center;max-width:32em;margin:0 auto
-  }
-
-  .crisis{background:var(--amber-bg);border:1px solid var(--amber-line);border-radius:18px;padding:26px 26px 22px}
-  .crisis h2{font-size:18.5px;color:var(--amber-hi);text-align:left;margin-bottom:14px;line-height:1.4}
-  .crisis ul{list-style:none;display:grid;gap:8px}
-  .crisis li{font-size:14px;color:var(--amber)}
-  .crisis strong{font-weight:600;color:var(--amber-hi)}
-
-  footer{padding:44px 0 64px;text-align:center;border-top:1px solid var(--hair);margin-top:34px}
-  footer .tag{margin-bottom:12px}
+  footer{padding:36px 0 56px;text-align:center;border-top:1px solid var(--line);margin-top:26px}
+  footer .tag{margin-bottom:10px}
   footer p{font-size:13px;color:var(--muted)}
-  footer a{color:var(--teal-hi);text-decoration:none}
+  footer a{color:var(--teal-deep);text-decoration:none}
   footer a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
 
 <header class="hero wrap">
-  <div class="pond fade">
-    <div class="ripple r1"></div><div class="ripple r2"></div><div class="ripple r3"></div>
-    <!-- Faithful copy of the app's lotus (components/Lotus.tsx) at full bloom:
-         same viewBox, petal paths, rotations, veins, aura, pads, pod — colours computed
-         from the app's shade() maths for the pink theme (#F4C0D1 / #ED93B1). -->
-    <svg class="flower" width="230" height="219" viewBox="0 0 160 152" aria-hidden="true">
-      <defs>
-        <linearGradient id="gOuter" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="rgb(255,210,227)"/><stop offset="1" stop-color="rgb(228,176,193)"/>
-        </linearGradient>
-        <linearGradient id="gMid" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="rgb(255,171,201)"/><stop offset="1" stop-color="rgb(217,127,157)"/>
-        </linearGradient>
-        <linearGradient id="gFront" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="rgb(243,153,183)"/><stop offset="1" stop-color="rgb(199,109,139)"/>
-        </linearGradient>
-        <radialGradient id="gPod" cx="0.5" cy="0.42" r="0.65">
-          <stop offset="0" stop-color="rgb(255,225,143)"/><stop offset="1" stop-color="rgb(232,181,99)"/>
-        </radialGradient>
-        <radialGradient id="gAura" cx="0.5" cy="0.5" r="0.5">
-          <stop offset="0" stop-color="rgb(255,247,255)" stop-opacity=".55"/>
-          <stop offset="0.55" stop-color="rgb(255,247,255)" stop-opacity=".18"/>
-          <stop offset="1" stop-color="rgb(255,247,255)" stop-opacity="0"/>
-        </radialGradient>
-        <radialGradient id="gWater" cx="0.5" cy="0.5" r="0.5">
-          <stop offset="0" stop-color="#FAC775" stop-opacity=".35"/><stop offset="1" stop-color="#FAC775" stop-opacity="0"/>
-        </radialGradient>
-      </defs>
-
-      <ellipse cx="44" cy="126" rx="30" ry="8" fill="#C0DD97"/>
-      <ellipse cx="118" cy="128" rx="26" ry="7" fill="#97C459"/>
-      <ellipse cx="80" cy="121" rx="32" ry="7" fill="url(#gWater)"/>
-      <circle cx="80" cy="64" r="50" fill="url(#gAura)" opacity=".75"/>
-
-      <g transform="rotate(0 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/><path d="M80,78 C75,64 74.5,48 78,36" fill="none" stroke="rgb(255,234,251)" stroke-width=".6" stroke-linecap="round" opacity=".22"/><path d="M80,78 C85,64 85.5,48 82,36" fill="none" stroke="rgb(255,234,251)" stroke-width=".6" stroke-linecap="round" opacity=".22"/></g>
-      <g transform="rotate(45 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
-      <g transform="rotate(90 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
-      <g transform="rotate(135 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
-      <g transform="rotate(180 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
-      <g transform="rotate(225 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
-      <g transform="rotate(270 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
-      <g transform="rotate(315 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
-
-      <g transform="rotate(22 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
-      <g transform="rotate(67 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
-      <g transform="rotate(112 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
-      <g transform="rotate(157 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
-      <g transform="rotate(202 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
-      <g transform="rotate(247 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
-      <g transform="rotate(292 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
-      <g transform="rotate(337 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
-
-      <g transform="rotate(0 80 84)"><path d="M80,82 C74,68 75,54 80,48 C85,54 86,68 80,82 Z" fill="url(#gFront)" stroke="rgb(167,77,107)" stroke-width="1"/><path d="M80,78 C79.4,68 79.5,58 80,51" fill="none" stroke="rgb(255,177,207)" stroke-width=".6" stroke-linecap="round" opacity=".3"/></g>
-      <g transform="rotate(72 80 84)"><path d="M80,82 C74,68 75,54 80,48 C85,54 86,68 80,82 Z" fill="url(#gFront)" stroke="rgb(167,77,107)" stroke-width="1"/><path d="M80,78 C79.4,68 79.5,58 80,51" fill="none" stroke="rgb(255,177,207)" stroke-width=".6" stroke-linecap="round" opacity=".3"/></g>
-      <g transform="rotate(144 80 84)"><path d="M80,82 C74,68 75,54 80,48 C85,54 86,68 80,82 Z" fill="url(#gFront)" stroke="rgb(167,77,107)" stroke-width="1"/><path d="M80,78 C79.4,68 79.5,58 80,51" fill="none" stroke="rgb(255,177,207)" stroke-width=".6" stroke-linecap="round" opacity=".3"/></g>
-      <g transform="rotate(216 80 84)"><path d="M80,82 C74,68 75,54 80,48 C85,54 86,68 80,82 Z" fill="url(#gFront)" stroke="rgb(167,77,107)" stroke-width="1"/><path d="M80,78 C79.4,68 79.5,58 80,51" fill="none" stroke="rgb(255,177,207)" stroke-width=".6" stroke-linecap="round" opacity=".3"/></g>
-      <g transform="rotate(288 80 84)"><path d="M80,82 C74,68 75,54 80,48 C85,54 86,68 80,82 Z" fill="url(#gFront)" stroke="rgb(167,77,107)" stroke-width="1"/><path d="M80,78 C79.4,68 79.5,58 80,51" fill="none" stroke="rgb(255,177,207)" stroke-width=".6" stroke-linecap="round" opacity=".3"/></g>
-
-      <circle cx="80" cy="79" r="10" fill="url(#gPod)" stroke="#BA7517" stroke-width="1"/>
-      <g fill="#BA7517">
-        <circle cx="76" cy="76" r="1.5"/><circle cx="84" cy="76" r="1.5"/><circle cx="80" cy="73" r="1.5"/>
-        <circle cx="78" cy="82" r="1.5"/><circle cx="82" cy="82" r="1.5"/>
-      </g>
-
-      <g fill="#fff">
-        <g class="spk"><rect x="96" y="41.25" width="9" height="1.5" rx=".75"/><rect x="99.75" y="37.5" width="1.5" height="9" rx=".75"/></g>
-        <g class="spk spk2"><rect x="52" y="51.25" width="7" height="1.5" rx=".75"/><rect x="54.75" y="48.5" width="1.5" height="7" rx=".75"/></g>
-        <g class="spk spk3"><rect x="92" y="65.25" width="6" height="1.5" rx=".75"/><rect x="94.25" y="63" width="1.5" height="6" rx=".75"/></g>
-      </g>
-    </svg>
-  </div>
-  <div class="brand fade d1">Lotus</div>
-  <div class="tag fade d1">growth in muddy water</div>
-
-  <h1 class="fade d2">The recovery app for people who'll never call a helpline.</h1>
-  <p class="sub fade d2">Lotus turns the money you don't gamble into visible growth — a living lotus and real goals, built quietly, at your pace.</p>
-
-  <!-- Waitlist posts to Formspree; submissions land in the inbox on that form's account. -->
-  <form class="fade d3" action="https://formspree.io/f/xgogvpny" method="POST">
-    <input type="email" name="email" required placeholder="you@email.com" aria-label="Email address">
-    <button type="submit">Tell me when it's ready</button>
-  </form>
-  <p class="fine fade d3">One email when Lotus launches. Maybe a short note once a month while it's being built. Nothing else, unsubscribe anytime.</p>
+  <div class="brand fade">Lotus</div>
+  <div class="tag fade">growth in muddy water</div>
+  <h1 class="fade d1">The recovery app for people who'll never call a helpline.</h1>
+  <p class="sub fade d1">The money you don't gamble becomes visible growth — a living lotus and real goals, built quietly, at your pace.</p>
 </header>
 
-<section class="wrap">
-  <div class="promises">
-    <div class="promise">
-      <h3>Your bank stays yours.</h3>
-      <p>Lotus never connects to your bank. Not optionally, not "coming soon" — the connection doesn't exist. You track manually; it sees only what you show it.</p>
+<!-- The teaser: a faithful rebuild of the app's Today screen (components/Home.tsx) —
+     same palette tokens, card radii, copy patterns and the exact Lotus.tsx flower geometry. -->
+<div class="phone-stage wrap fade d2">
+  <div class="phone" role="img" aria-label="The Lotus app's Today screen: a blooming lotus on a calm pond, money freed up this month, progress toward a savings goal, a daily check-in, and a calm kit.">
+    <div class="screen" aria-hidden="true">
+      <div class="island"></div>
+      <div class="statusbar">9:41</div>
+
+      <div class="apphead">
+        <span class="name">Lotus</span>
+        <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Upgrade</span>
+      </div>
+      <span class="chip">Manual tracking · $60 logged this month</span>
+
+      <div class="pondcard">
+        <div class="ripple r1"></div><div class="ripple r2"></div><div class="ripple r3"></div>
+        <!-- Faithful copy of the app's lotus (components/Lotus.tsx) at full bloom — pink theme. -->
+        <svg class="flower" width="132" height="126" viewBox="0 0 160 152">
+          <defs>
+            <linearGradient id="gOuter" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="rgb(255,210,227)"/><stop offset="1" stop-color="rgb(228,176,193)"/>
+            </linearGradient>
+            <linearGradient id="gMid" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="rgb(255,171,201)"/><stop offset="1" stop-color="rgb(217,127,157)"/>
+            </linearGradient>
+            <linearGradient id="gFront" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="rgb(243,153,183)"/><stop offset="1" stop-color="rgb(199,109,139)"/>
+            </linearGradient>
+            <radialGradient id="gPod" cx="0.5" cy="0.42" r="0.65">
+              <stop offset="0" stop-color="rgb(255,225,143)"/><stop offset="1" stop-color="rgb(232,181,99)"/>
+            </radialGradient>
+            <radialGradient id="gAura" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0" stop-color="rgb(255,247,255)" stop-opacity=".55"/>
+              <stop offset="0.55" stop-color="rgb(255,247,255)" stop-opacity=".18"/>
+              <stop offset="1" stop-color="rgb(255,247,255)" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="gWater" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0" stop-color="#FAC775" stop-opacity=".35"/><stop offset="1" stop-color="#FAC775" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <ellipse cx="44" cy="126" rx="30" ry="8" fill="#C0DD97"/>
+          <ellipse cx="118" cy="128" rx="26" ry="7" fill="#97C459"/>
+          <ellipse cx="80" cy="121" rx="32" ry="7" fill="url(#gWater)"/>
+          <circle cx="80" cy="64" r="50" fill="url(#gAura)" opacity=".75"/>
+
+          <g transform="rotate(0 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/><path d="M80,78 C75,64 74.5,48 78,36" fill="none" stroke="rgb(255,234,251)" stroke-width=".6" stroke-linecap="round" opacity=".22"/><path d="M80,78 C85,64 85.5,48 82,36" fill="none" stroke="rgb(255,234,251)" stroke-width=".6" stroke-linecap="round" opacity=".22"/></g>
+          <g transform="rotate(45 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
+          <g transform="rotate(90 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
+          <g transform="rotate(135 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
+          <g transform="rotate(180 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
+          <g transform="rotate(225 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
+          <g transform="rotate(270 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
+          <g transform="rotate(315 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
+
+          <g transform="rotate(22 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
+          <g transform="rotate(67 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
+          <g transform="rotate(112 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
+          <g transform="rotate(157 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
+          <g transform="rotate(202 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
+          <g transform="rotate(247 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
+          <g transform="rotate(292 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
+          <g transform="rotate(337 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
+
+          <g transform="rotate(0 80 84)"><path d="M80,82 C74,68 75,54 80,48 C85,54 86,68 80,82 Z" fill="url(#gFront)" stroke="rgb(167,77,107)" stroke-width="1"/><path d="M80,78 C79.4,68 79.5,58 80,51" fill="none" stroke="rgb(255,177,207)" stroke-width=".6" stroke-linecap="round" opacity=".3"/></g>
+          <g transform="rotate(72 80 84)"><path d="M80,82 C74,68 75,54 80,48 C85,54 86,68 80,82 Z" fill="url(#gFront)" stroke="rgb(167,77,107)" stroke-width="1"/><path d="M80,78 C79.4,68 79.5,58 80,51" fill="none" stroke="rgb(255,177,207)" stroke-width=".6" stroke-linecap="round" opacity=".3"/></g>
+          <g transform="rotate(144 80 84)"><path d="M80,82 C74,68 75,54 80,48 C85,54 86,68 80,82 Z" fill="url(#gFront)" stroke="rgb(167,77,107)" stroke-width="1"/><path d="M80,78 C79.4,68 79.5,58 80,51" fill="none" stroke="rgb(255,177,207)" stroke-width=".6" stroke-linecap="round" opacity=".3"/></g>
+          <g transform="rotate(216 80 84)"><path d="M80,82 C74,68 75,54 80,48 C85,54 86,68 80,82 Z" fill="url(#gFront)" stroke="rgb(167,77,107)" stroke-width="1"/><path d="M80,78 C79.4,68 79.5,58 80,51" fill="none" stroke="rgb(255,177,207)" stroke-width=".6" stroke-linecap="round" opacity=".3"/></g>
+          <g transform="rotate(288 80 84)"><path d="M80,82 C74,68 75,54 80,48 C85,54 86,68 80,82 Z" fill="url(#gFront)" stroke="rgb(167,77,107)" stroke-width="1"/><path d="M80,78 C79.4,68 79.5,58 80,51" fill="none" stroke="rgb(255,177,207)" stroke-width=".6" stroke-linecap="round" opacity=".3"/></g>
+
+          <circle cx="80" cy="79" r="10" fill="url(#gPod)" stroke="#BA7517" stroke-width="1"/>
+          <g fill="#BA7517">
+            <circle cx="76" cy="76" r="1.5"/><circle cx="84" cy="76" r="1.5"/><circle cx="80" cy="73" r="1.5"/>
+            <circle cx="78" cy="82" r="1.5"/><circle cx="82" cy="82" r="1.5"/>
+          </g>
+
+          <g fill="#fff">
+            <g class="spk"><rect x="96" y="41.25" width="9" height="1.5" rx=".75"/><rect x="99.75" y="37.5" width="1.5" height="9" rx=".75"/></g>
+            <g class="spk spk2"><rect x="52" y="51.25" width="7" height="1.5" rx=".75"/><rect x="54.75" y="48.5" width="1.5" height="7" rx=".75"/></g>
+            <g class="spk spk3"><rect x="92" y="65.25" width="6" height="1.5" rx=".75"/><rect x="94.25" y="63" width="1.5" height="6" rx=".75"/></g>
+          </g>
+        </svg>
+        <div class="plantname">Pink lotus</div>
+        <div class="plantstat">Day 18 · coming into bloom</div>
+      </div>
+
+      <div class="acard">
+        <div class="alabel">Freed up this month</div>
+        <div class="bignum">$240</div>
+        <div class="ahint">money you didn't lose to gambling — calculated for you</div>
+      </div>
+
+      <div class="acard">
+        <div class="alabel">Saved · Flights to Japan</div>
+        <div class="goalamt">$140 of $800</div>
+        <div class="track"><div class="fill"></div></div>
+        <div class="ahint">about 5 months to your goal at this pace</div>
+        <div class="abtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Log a saving</div>
+      </div>
+
+      <div class="arow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Daily check-in</div>
+      <div class="arow warm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg>Feeling an urge? Open the calm kit</div>
+
+      <div class="tabbar">
+        <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Today</div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg>Garden</div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Plan</div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg>Support</div>
+      </div>
     </div>
-    <div class="promise">
-      <h3>Safety is free. Forever.</h3>
-      <p>The calm kit, the crisis pathway, tracking and your lotus will never be behind a paywall. This is a founding rule, not a pricing decision.</p>
-    </div>
-    <div class="promise">
-      <h3>The lotus never dies.</h3>
-      <p>No streaks. No zero. A relapse turns the water muddy — and the flower keeps growing. Recovery counted in growth, not in days you can lose.</p>
-    </div>
+  </div>
+</div>
+
+<section class="wrap fade d3">
+  <p class="eyebrow">Inside the app</p>
+
+  <div class="row">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    <div><strong>A daily check-in that can't be failed</strong>
+    <p>One tap, any mood — steady, wobbly, or it's been hard. No streaks, no zero. A relapse muddies the water; the lotus keeps growing.</p></div>
+  </div>
+
+  <div class="row">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    <div><strong>Money kept, made visible</strong>
+    <p>A skipped bet becomes progress toward something real — flights, a licence, a buffer between you and the bad weeks.</p></div>
+  </div>
+
+  <div class="row">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    <div><strong>Your bank stays yours</strong>
+    <p>Lotus never connects to your bank — the connection doesn't exist. You track by hand; it sees only what you show it.</p></div>
+  </div>
+
+  <div class="row warm">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg>
+    <div><strong>The calm kit and crisis pathway are free, forever</strong>
+    <p>Safety will never be behind a paywall or interrupted by an upsell. This is a founding rule, not a pricing decision.</p></div>
   </div>
 </section>
 
-<section class="wrap">
-  <h2>How it works</h2>
-  <div class="steps">
-    <div class="step">
-      <div class="num">1</div>
-      <p><strong>Log what you didn't gamble.</strong> A skipped bet, a deposit not made — you enter it, by hand, in seconds.</p>
-    </div>
-    <div class="step">
-      <div class="num">2</div>
-      <p><strong>Watch it become something.</strong> Every entry feeds your lotus and moves a real goal — flights, a licence, a buffer between you and the bad weeks.</p>
-    </div>
-    <div class="step">
-      <div class="num">3</div>
-      <p><strong>Keep going, muddy water and all.</strong> Bad days are part of it. Nothing resets. The direction is the point.</p>
-    </div>
+<section class="wrap" id="waitlist">
+  <div class="signup">
+    <h2>One email when it launches.</h2>
+    <p class="lead">Coming to iOS and Android in Australia, the UK, the US, Canada and New Zealand.</p>
+    <!-- Waitlist posts to Formspree; submissions land in the inbox on that form's account. -->
+    <form action="https://formspree.io/f/xgogvpny" method="POST">
+      <input type="email" name="email" required placeholder="you@email.com" aria-label="Email address">
+      <button type="submit">Tell me when it's ready</button>
+    </form>
+    <p class="fine">Maybe a short note once a month while it's being built. Nothing else, unsubscribe anytime.</p>
   </div>
-</section>
-
-<section class="wrap">
-  <p class="quiet">Lotus is built by one person, from lived experience, in Australia — for anyone, anywhere, who wants out of the loop. It launches on iOS and Android in Australia, the UK, the US, Canada and New Zealand.</p>
 </section>
 
 <section class="wrap" id="help">
@@ -254,7 +320,8 @@
 <footer>
   <div class="wrap">
     <div class="tag">growth in muddy water</div>
-    <p>No bank access · no ads · analytics only with consent</p>
+    <p>Built by one person, from lived experience, in Australia.</p>
+    <p style="margin-top:9px">No bank access · no ads · analytics only with consent</p>
     <p style="margin-top:9px"><a href="mailto:hello@evergreenstudios.net.au">Contact</a></p>
     <p style="margin-top:9px"><a href="/privacy.html">Privacy policy</a> · <a href="/terms.html">Terms of use</a></p>
     <p style="margin-top:9px">© 2026 Evergreen Studio Pty Ltd · ABN 74 700 261 276</p>
