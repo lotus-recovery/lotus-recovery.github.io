@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get Lotus — the gambling recovery app</title>
+<meta name="description" content="Download Lotus, the gambling recovery app. Free on iOS and Android — it never connects to your bank, and safety features are free, forever.">
+<!-- TODO AT LAUNCH: remove this noindex when the store links are real. -->
+<meta name="robots" content="noindex">
+<style>
+  /* Same skin as the landing page: the app's own tokens (theme.ts LIGHT/DARK). */
+  :root{
+    --bg:#F1F7F4; --card:#FFFFFF; --ink:#21302B; --soft:#516056; --muted:#8A938D; --line:#E2EAE5;
+    --teal:#1D9E75; --teal-deep:#0F6E56; --teal-pale:#E1F5EE;
+    --warn-bg:#FBF1E2; --warn-line:#F0D9B8; --warn-ink:#8A5A14;
+    --page:#EAF2EE; --btn-ink:#FFFFFF;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0E1513; --card:#17201D; --ink:#ECF1EE; --soft:#A6B2AC; --muted:#73807A; --line:#283330;
+      --teal:#2EB78C; --teal-deep:#7FD9BA; --teal-pale:#13302A;
+      --warn-bg:#2A2216; --warn-line:#4A3D22; --warn-ink:#E6C277;
+      --page:#0A100E; --btn-ink:#06231C;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:var(--sans); color:var(--ink); background:var(--page);
+    font-size:16px; line-height:1.6;
+    background-image:radial-gradient(640px 420px at 50% 160px, var(--teal-pale), transparent 70%);
+    min-height:100svh; display:flex; flex-direction:column;
+  }
+  .wrap{max-width:520px;margin:0 auto;padding:0 20px;width:100%}
+  main{flex:1}
+
+  .fade{animation:fadeUp .8s ease both}
+  .d1{animation-delay:.07s}.d2{animation-delay:.14s}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important}}
+
+  .hero{text-align:center;padding:52px 0 8px}
+  .pond{position:relative;width:190px;height:182px;margin:0 auto}
+  .ripple{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);border:1px solid rgba(93,202,165,.4);border-radius:50%;pointer-events:none}
+  .r1{width:100px;height:28px;animation:ripple 7s ease-out infinite}
+  .r2{width:100px;height:28px;animation:ripple 7s ease-out 2.3s infinite}
+  .r3{width:100px;height:28px;animation:ripple 7s ease-out 4.6s infinite}
+  @keyframes ripple{0%{transform:translateX(-50%) scale(.5);opacity:0}12%{opacity:.5}100%{transform:translateX(-50%) scale(2);opacity:0}}
+  .flower{animation:bob 8s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  .spk{animation:twinkle 2.4s ease-in-out infinite}
+  .spk2{animation-delay:1.2s}.spk3{animation-delay:.7s}
+  @keyframes twinkle{0%,100%{opacity:0}50%{opacity:.9}}
+
+  .brand{font-size:19px;font-weight:600;letter-spacing:.5px;margin-top:4px}
+  .tag{font-size:14px;color:var(--teal-deep);margin-top:3px}
+  h1{font-size:clamp(28px,5.4vw,38px);line-height:1.18;font-weight:700;letter-spacing:-.015em;margin:22px auto 12px;max-width:18ch;text-wrap:balance}
+  .sub{font-size:16px;color:var(--soft);max-width:40ch;margin:0 auto;text-wrap:pretty}
+
+  .stores{display:flex;flex-direction:column;gap:10px;max-width:340px;margin:28px auto 0}
+  .store{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    background:var(--teal);color:var(--btn-ink);text-decoration:none;
+    font-size:16px;font-weight:600;border-radius:12px;padding:15px 20px;
+    transition:filter .2s,transform .15s
+  }
+  .store:hover{filter:brightness(1.08)}
+  .store:active{transform:scale(.98)}
+  .store:focus-visible{outline:2px solid var(--teal-deep);outline-offset:2px}
+  .store svg{width:20px;height:20px;flex:none}
+  .store span small{display:block;font-size:11px;font-weight:500;opacity:.85;text-align:left}
+  .store .big{display:block;text-align:left;line-height:1.25}
+
+  .fine{font-size:13px;color:var(--muted);text-align:center;max-width:40ch;margin:16px auto 0}
+
+  .facts{display:grid;gap:8px;margin:30px 0 6px}
+  .fact{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 15px;font-size:14px;color:var(--soft)}
+  .fact svg{width:16px;height:16px;color:var(--teal);flex:none}
+  .fact strong{color:var(--ink);font-weight:600}
+
+  .crisis{background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:14px;padding:18px 18px 15px;margin:24px 0}
+  .crisis h2{font-size:14.5px;font-weight:650;color:var(--warn-ink);margin-bottom:9px;line-height:1.45}
+  .crisis ul{list-style:none;display:grid;gap:5px}
+  .crisis li{font-size:12.5px;color:var(--warn-ink)}
+  .crisis strong{font-weight:650}
+
+  footer{padding:22px 0 40px;text-align:center;border-top:1px solid var(--line);margin-top:8px}
+  footer p{font-size:12.5px;color:var(--muted)}
+  footer a{color:var(--teal-deep);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<main>
+<header class="hero wrap">
+  <div class="pond fade">
+    <div class="ripple r1"></div><div class="ripple r2"></div><div class="ripple r3"></div>
+    <!-- Faithful copy of the app's lotus (components/Lotus.tsx) at full bloom — pink theme. -->
+    <svg class="flower" width="190" height="181" viewBox="0 0 160 152" aria-hidden="true">
+      <defs>
+        <linearGradient id="gOuter" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="rgb(255,210,227)"/><stop offset="1" stop-color="rgb(228,176,193)"/>
+        </linearGradient>
+        <linearGradient id="gMid" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="rgb(255,171,201)"/><stop offset="1" stop-color="rgb(217,127,157)"/>
+        </linearGradient>
+        <linearGradient id="gFront" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="rgb(243,153,183)"/><stop offset="1" stop-color="rgb(199,109,139)"/>
+        </linearGradient>
+        <radialGradient id="gPod" cx="0.5" cy="0.42" r="0.65">
+          <stop offset="0" stop-color="rgb(255,225,143)"/><stop offset="1" stop-color="rgb(232,181,99)"/>
+        </radialGradient>
+        <radialGradient id="gAura" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="rgb(255,247,255)" stop-opacity=".55"/>
+          <stop offset="0.55" stop-color="rgb(255,247,255)" stop-opacity=".18"/>
+          <stop offset="1" stop-color="rgb(255,247,255)" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="gWater" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#FAC775" stop-opacity=".35"/><stop offset="1" stop-color="#FAC775" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <ellipse cx="44" cy="126" rx="30" ry="8" fill="#C0DD97"/>
+      <ellipse cx="118" cy="128" rx="26" ry="7" fill="#97C459"/>
+      <ellipse cx="80" cy="121" rx="32" ry="7" fill="url(#gWater)"/>
+      <circle cx="80" cy="64" r="50" fill="url(#gAura)" opacity=".75"/>
+
+      <g transform="rotate(0 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/><path d="M80,78 C75,64 74.5,48 78,36" fill="none" stroke="rgb(255,234,251)" stroke-width=".6" stroke-linecap="round" opacity=".22"/><path d="M80,78 C85,64 85.5,48 82,36" fill="none" stroke="rgb(255,234,251)" stroke-width=".6" stroke-linecap="round" opacity=".22"/></g>
+      <g transform="rotate(45 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
+      <g transform="rotate(90 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
+      <g transform="rotate(135 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
+      <g transform="rotate(180 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
+      <g transform="rotate(225 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
+      <g transform="rotate(270 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
+      <g transform="rotate(315 80 84)"><path d="M80,84 C68,60 70,34 80,24 C90,34 92,60 80,84 Z" fill="url(#gOuter)" stroke="#ED93B1" stroke-width="1"/><path d="M80,80 C79,62 79,46 80,30" fill="none" stroke="rgb(255,234,251)" stroke-width=".8" stroke-linecap="round" opacity=".4"/></g>
+
+      <g transform="rotate(22 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
+      <g transform="rotate(67 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
+      <g transform="rotate(112 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
+      <g transform="rotate(157 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
+      <g transform="rotate(202 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
+      <g transform="rotate(247 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
+      <g transform="rotate(292 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
+      <g transform="rotate(337 80 84)"><path d="M80,84 C71,64 72,44 80,36 C88,44 89,64 80,84 Z" fill="url(#gMid)" stroke="rgb(192,102,132)" stroke-width="1"/><path d="M80,80 C79.2,66 79.4,52 80,40" fill="none" stroke="rgb(255,193,223)" stroke-width=".7" stroke-linecap="round" opacity=".35"/></g>
+
+      <g transform="rotate(0 80 84)"><path d="M80,82 C74,68 75,54 80,48 C85,54 86,68 80,82 Z" fill="url(#gFront)" stroke="rgb(167,77,107)" stroke-width="1"/><path d="M80,78 C79.4,68 79.5,58 80,51" fill="none" stroke="rgb(255,177,207)" stroke-width=".6" stroke-linecap="round" opacity=".3"/></g>
+      <g transform="rotate(72 80 84)"><path d="M80,82 C74,68 75,54 80,48 C85,54 86,68 80,82 Z" fill="url(#gFront)" stroke="rgb(167,77,107)" stroke-width="1"/><path d="M80,78 C79.4,68 79.5,58 80,51" fill="none" stroke="rgb(255,177,207)" stroke-width=".6" stroke-linecap="round" opacity=".3"/></g>
+      <g transform="rotate(144 80 84)"><path d="M80,82 C74,68 75,54 80,48 C85,54 86,68 80,82 Z" fill="url(#gFront)" stroke="rgb(167,77,107)" stroke-width="1"/><path d="M80,78 C79.4,68 79.5,58 80,51" fill="none" stroke="rgb(255,177,207)" stroke-width=".6" stroke-linecap="round" opacity=".3"/></g>
+      <g transform="rotate(216 80 84)"><path d="M80,82 C74,68 75,54 80,48 C85,54 86,68 80,82 Z" fill="url(#gFront)" stroke="rgb(167,77,107)" stroke-width="1"/><path d="M80,78 C79.4,68 79.5,58 80,51" fill="none" stroke="rgb(255,177,207)" stroke-width=".6" stroke-linecap="round" opacity=".3"/></g>
+      <g transform="rotate(288 80 84)"><path d="M80,82 C74,68 75,54 80,48 C85,54 86,68 80,82 Z" fill="url(#gFront)" stroke="rgb(167,77,107)" stroke-width="1"/><path d="M80,78 C79.4,68 79.5,58 80,51" fill="none" stroke="rgb(255,177,207)" stroke-width=".6" stroke-linecap="round" opacity=".3"/></g>
+
+      <circle cx="80" cy="79" r="10" fill="url(#gPod)" stroke="#BA7517" stroke-width="1"/>
+      <g fill="#BA7517">
+        <circle cx="76" cy="76" r="1.5"/><circle cx="84" cy="76" r="1.5"/><circle cx="80" cy="73" r="1.5"/>
+        <circle cx="78" cy="82" r="1.5"/><circle cx="82" cy="82" r="1.5"/>
+      </g>
+
+      <g fill="#fff">
+        <g class="spk"><rect x="96" y="41.25" width="9" height="1.5" rx=".75"/><rect x="99.75" y="37.5" width="1.5" height="9" rx=".75"/></g>
+        <g class="spk spk2"><rect x="52" y="51.25" width="7" height="1.5" rx=".75"/><rect x="54.75" y="48.5" width="1.5" height="7" rx=".75"/></g>
+        <g class="spk spk3"><rect x="92" y="65.25" width="6" height="1.5" rx=".75"/><rect x="94.25" y="63" width="1.5" height="6" rx=".75"/></g>
+      </g>
+    </svg>
+  </div>
+  <div class="brand fade">Lotus</div>
+  <div class="tag fade">growth in muddy water</div>
+
+  <h1 class="fade d1">The gambling recovery app. Free to start, quiet by design.</h1>
+  <p class="sub fade d1">A living lotus that grows with you, powered by the money you don't gamble.</p>
+
+  <!-- TODO AT LAUNCH: replace both hrefs with the real store URLs
+       (App Store product page / Play Store listing). Until then this page
+       is unlinked from everywhere — do not share it. -->
+  <div class="stores fade d2">
+    <a class="store" href="#">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      <span class="big"><small>Download on the</small>App Store</span>
+    </a>
+    <a class="store" href="#">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12l-9.85 9.85c-.5-.25-.84-.76-.84-1.35m13.81-5.38L6.05 21.34l8.49-8.49 2.27 2.27m3.35-4.31c.34.27.59.69.59 1.19s-.22.9-.57 1.18l-2.29 1.32-2.5-2.5 2.5-2.5 2.27 1.31M6.05 2.66l10.76 6.22-2.27 2.27-8.49-8.49z"/></svg>
+      <span class="big"><small>Get it on</small>Google Play</span>
+    </a>
+  </div>
+  <p class="fine fade d2">Free to download and use. Safety features are free forever.</p>
+</header>
+
+<section class="wrap fade d2">
+  <div class="facts">
+    <div class="fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span><strong>Never connects to your bank</strong> — you track by hand; it sees only what you show it.</span></div>
+    <div class="fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span><strong>No streaks, no shame</strong> — a relapse muddies the water; your lotus never dies.</span></div>
+    <div class="fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span><strong>Money kept, made visible</strong> — skipped bets become real goals.</span></div>
+  </div>
+</section>
+
+<section class="wrap" id="help">
+  <div class="crisis">
+    <h2>If gambling is hurting you right now, you don't have to wait for an app.</h2>
+    <ul>
+      <li>Australia — Gambling Help: <strong>1800 858 858</strong> (free, 24/7)</li>
+      <li>United Kingdom — National Gambling Helpline: <strong>0808 8020 133</strong> (free, 24/7)</li>
+      <li>United States — National Problem Gambling Helpline: <strong>1-800-MY-RESET</strong> (free, 24/7)</li>
+      <li>Canada — Responsible Gambling Council: <strong>responsiblegambling.org</strong> (find your province's service)</li>
+      <li>New Zealand — Gambling Helpline: <strong>0800 654 655</strong> (free, 24/7)</li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>No bank access · no ads · analytics only with consent</p>
+    <p style="margin-top:8px"><a href="/">About Lotus</a> · <a href="/privacy.html">Privacy policy</a> · <a href="/terms.html">Terms of use</a> · <a href="mailto:hello@evergreenstudios.net.au">Contact</a></p>
+    <p style="margin-top:8px">© 2026 Evergreen Studio Pty Ltd · ABN 74 700 261 276</p>
+  </div>
+</footer>
+
+</body>
+</html>

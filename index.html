@@ -110,6 +110,19 @@
   .signup{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 22px;text-align:center}
   .signup h2{font-size:19px;font-weight:650;margin-bottom:6px}
   .signup .lead{font-size:14px;color:var(--soft);margin-bottom:16px}
+  .tgbtn{
+    display:flex;align-items:center;justify-content:center;gap:9px;max-width:420px;margin:0 auto;
+    background:var(--teal);color:var(--btn-ink);text-decoration:none;
+    font-size:15px;font-weight:600;border-radius:12px;padding:14px 20px;
+    transition:filter .2s,transform .15s
+  }
+  .tgbtn:hover{filter:brightness(1.08)}
+  .tgbtn:active{transform:scale(.98)}
+  .tgbtn:focus-visible{outline:2px solid var(--teal-deep);outline-offset:2px}
+  .tgbtn svg{width:18px;height:18px;flex:none}
+  .tghint{font-size:12.5px;color:var(--muted);margin:8px auto 0}
+  .or{display:flex;align-items:center;gap:12px;max-width:420px;margin:18px auto;color:var(--muted);font-size:12.5px}
+  .or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
   form{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
   input[type=email]{
     flex:1;min-width:200px;padding:13px 15px;font-size:16px;font-family:var(--sans);
@@ -293,14 +306,20 @@
 
 <section class="wrap" id="waitlist">
   <div class="signup">
-    <h2>One email when it launches.</h2>
+    <h2>Be there when it opens.</h2>
     <p class="lead">Coming to iOS and Android in Australia, the UK, the US, Canada and New Zealand.</p>
+    <a class="tgbtn" href="https://t.me/LotusGrowthChannel">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+      Join the Telegram
+    </a>
+    <p class="tghint">One calm recovery message a day while it's being built — and the first to know at launch.</p>
+    <div class="or">or</div>
     <!-- Waitlist posts to Formspree; submissions land in the inbox on that form's account. -->
     <form action="https://formspree.io/f/xgogvpny" method="POST">
       <input type="email" name="email" required placeholder="you@email.com" aria-label="Email address">
       <button type="submit">Tell me when it's ready</button>
     </form>
-    <p class="fine">Maybe a short note once a month while it's being built. Nothing else, unsubscribe anytime.</p>
+    <p class="fine">One email when Lotus launches. Maybe a short note once a month while it's being built. Nothing else, unsubscribe anytime.</p>
   </div>
 </section>
 
